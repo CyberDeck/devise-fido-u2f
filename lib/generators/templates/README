@@ -2,5 +2,31 @@
 
 Device FIDO U2F successfully installed to your application.
 
+You need to:
+
+1) Adapt your Devise models to include both the FIDO U2F registration and
+   authentication modules, e.g. change
+
+   'devise :database_authenticable ...'
+
+   to 
+
+   'devise :database_authenticable ..., 
+    :fido_usf_registerable, :fido_usf_authenticatable'
+
+2) Modify your application controller 
+   (i.e. app/controllers/application_controller.rb) to always prepend the 
+   'protect_from_forgery' within the action chain, e.g. change
+
+   'protect_from_forgery with: :exception'
+
+   to
+
+   'protect_from_forgery with: :exception, prepend: true'
+
+
+DISCLAIMER: IF YOU DO NOT APPLY BOTH CHANGES, IT IS LIKELY THAT 
+FIDO U2F WILL NOT WORK AS EXPECTED!
+
 ===============================================================================
 
