@@ -1,0 +1,41 @@
+<h2>Authenticate key</h2>
+<p>Please insert one of your registered keys and press the button within 15 seconds</p>
+<p id="waiting">Waiting...</p>
+<p id="error" style="display: none;"></p>
+<%= form_tag user_fido_usf_authentication_path(), method: 'post' do %>
+  <%= hidden_field_tag :response %>
+<% end %>
+<script>
+  var appId = <%= @app_id.to_json.html_safe %>;
+  var signRequests = <%= @sign_requests.to_json.html_safe %>;
+  var challenge = <%= @challenge.to_json.html_safe %>;
+  var $waiting = document.getElementById('waiting');
+  var $error = document.getElementById('error');
+  var errorMap = {
+    1: 'Unknown error, try again',
+    2: "Bad request error, try again" ,
+    3: "This key isn't supported, please try another one",
+    4: 'The device is is not registered, please register first.',
+    5: 'Authentication timed out. Please reload to try again.'
+  };
+  var setError = function(code) {
+    $waiting.style.display = 'none';
+    $error.style.display = 'block';
+    $error.innerHTML = errorMap[code];
+  };
+
+  u2f.sign(appId, challenge, signRequests, function(signResponse) {
+    var form, reg;
+
+    if (signResponse.errorCode) {
+      return setError(signResponse.errorCode);
+    }
+
+    form = document.forms[0];
+    response = document.querySelector('[name=response]');
+
+    response.value = JSON.stringify(signResponse);
+
+    form.submit();
+  }, 15);
+</script>
