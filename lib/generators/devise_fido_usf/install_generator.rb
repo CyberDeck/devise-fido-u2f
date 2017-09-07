@@ -1,6 +1,6 @@
 require 'rails/generators/base'
 
-module Devise
+module DeviseFidoUsf
   module Generators
     MissingORMError = Class.new(Thor::Error)
 
