@@ -7,8 +7,7 @@ class InstallGeneratorTest < Rails::Generators::TestCase
 
   test "assert all files are properly created" do
     run_generator(["--orm=active_record"])
-    assert_file "config/initializers/devise.rb", /devise\/orm\/active_record/
-    assert_file "config/locales/devise.en.yml"
+    assert_file "config/locales/fido_usf.en.yml"
   end
 
   test "fails if no ORM is specified" do
@@ -18,8 +17,7 @@ class InstallGeneratorTest < Rails::Generators::TestCase
 
     assert_match %r{An ORM must be set to install Devise}, stderr
 
-    assert_no_file "config/initializers/devise.rb"
-    assert_no_file "config/locales/devise.en.yml"
+    assert_no_file "config/locales/fido_usf.en.yml"
   end
 end
 
