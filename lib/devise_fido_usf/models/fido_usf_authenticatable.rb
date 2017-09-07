@@ -7,7 +7,7 @@ module Devise
 
       # Does the user has a registered FIDO U2F device?
       def with_fido_usf_authentication?()
-        FidoUsf::FidoUsfRegistration.where(user: self).count()>0
+        FidoUsf::FidoUsfDevice.where(user: self).count()>0
       end
 
     end

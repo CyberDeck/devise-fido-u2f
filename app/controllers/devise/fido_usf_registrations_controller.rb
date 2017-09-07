@@ -35,7 +35,7 @@ class Devise::FidoUsfRegistrationsController < DeviseController
     response = U2F::RegisterResponse.load_from_json(params[:response])
     begin
       reg = helpers.u2f.register!(session[:challenges], response)
-      FidoUsf::FidoUsfRegistration.create!(
+      FidoUsf::FidoUsfDevice.create!(
           user: current_user,
           name: 'Unnamed 1',
           certificate: reg.certificate,
