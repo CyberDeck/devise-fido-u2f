@@ -10,7 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170907113323) do
+ActiveRecord::Schema.define(version: 20170907153846) do
+
+  create_table "fido_usf_devices", force: :cascade do |t|
+    t.string "user_type", null: false
+    t.integer "user_id", null: false
+    t.string "name", default: "", null: false
+    t.string "key_handle", limit: 255, default: "", null: false
+    t.binary "public_key", limit: 10240, default: "x''", null: false
+    t.binary "certificate", limit: 1048576, default: "x''", null: false
+    t.integer "counter", default: 0, null: false
+    t.datetime "last_authenticated_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key_handle"], name: "index_fido_usf_devices_on_key_handle"
+    t.index ["last_authenticated_at"], name: "index_fido_usf_devices_on_last_authenticated_at"
+    t.index ["user_type", "user_id"], name: "index_fido_usf_devices_on_user_type_and_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false

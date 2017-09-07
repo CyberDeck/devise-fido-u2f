@@ -30,6 +30,10 @@ module DeviseFidoUsf
         copy_file "../../../config/locales/en.yml", "config/locales/fido_usf.en.yml"
       end
 
+      def run_migration
+        generate "devise_fido_usf:migrate", "FidoUsfDevices"
+      end
+
       def show_readme
         readme "README" if behavior == :invoke
       end
