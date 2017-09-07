@@ -1,0 +1,7 @@
+<h2> Welcome to Devise-Fido-U2F Example Application</h2>
+
+Link to a <%= link_to 'secret and protected page', secret_path() %>.
+
+<% if user_signed_in? %>
+  <p>A valid user is currently signed in. You can <%= link_to 'sign out', destroy_user_session_path(), :method=>'delete' %>.
+<% end %>

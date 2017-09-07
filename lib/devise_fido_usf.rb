@@ -1,0 +1,3 @@
+module DeviseFidoUsf
+  # Your code goes here...
+end
