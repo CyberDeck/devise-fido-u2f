@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170907153846) do
+ActiveRecord::Schema.define(version: 20170907163625) do
 
   create_table "fido_usf_devices", force: :cascade do |t|
     t.string "user_type", null: false

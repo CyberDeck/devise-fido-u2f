@@ -2,4 +2,5 @@
 
 <p>This is a secret page and shall only be visible to a authenticated user.</p>
 <p>If the user registered a FIDO U2F device for his account, he will be asked to authenticate with such a device prior accessing this page.</p>
+<p>You can register a FIDO U2F device <%= link_to 'here', user_fido_usf_registration_path() %>.</p>
 <p>Back to <%= link_to 'main page', root_path() %></p>

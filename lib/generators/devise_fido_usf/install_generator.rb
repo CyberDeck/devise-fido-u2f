@@ -26,6 +26,12 @@ module DeviseFidoUsf
 
       end
 
+      def add_application_helper
+        in_root do
+          inject_into_module "app/helpers/application_helper.rb", ApplicationHelper, application_helper_data
+        end
+      end
+
       def copy_locale
         copy_file "../../../config/locales/en.yml", "config/locales/fido_usf.en.yml"
       end
@@ -36,6 +42,16 @@ module DeviseFidoUsf
 
       def show_readme
         readme "README" if behavior == :invoke
+      end
+
+      def application_helper_data
+<<RUBY
+
+  def u2f
+    # use base_url as app_id, e.g. 'http://localhost:3000'
+    @u2f ||= U2F::U2F.new(request.base_url)
+  end
+RUBY
       end
     end
   end

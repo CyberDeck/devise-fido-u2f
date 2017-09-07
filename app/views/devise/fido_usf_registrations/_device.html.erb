@@ -1,5 +1,5 @@
 <tr id="device_<%= device.id %>">
   <td><%= device.name %></td>
   <td><%= l(device.last_authenticated_at, format: :long) %></td>
-  <td><%= link_to 'Delete', user_fido_usf_registration_path(id: device.id), remote: true, :method => :delete, data: {confirm: "Should device #{device._name} be deleted?" } %></td>
+  <td><%= link_to 'Delete', user_fido_usf_registration_path(id: device.id), remote: true, :method => :delete, data: {confirm: "Should device #{device.name} be deleted?" } %></td>
 </tr>

@@ -11,4 +11,5 @@
 // about supported directives.
 //
 //= require rails-ujs
+//= require u2f-api
 //= require_tree .

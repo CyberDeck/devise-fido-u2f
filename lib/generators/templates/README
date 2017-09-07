@@ -24,6 +24,18 @@ You need to:
 
    'protect_from_forgery with: :exception, prepend: true'
 
+3) Add 'u2f-api.js' to your javascript assets, e.g. include in
+   'app/assets/javascript/application.js' the following statement:
+
+   '//= require u2f-api'
+
+4) You need to run your server with SSL. Otherwise U2F refuses to work.
+   Probably you want to install the "thin" gem and use:
+
+   'thin start --ssl -p 3000'
+
+   to start your development server.
+
 
 DISCLAIMER: IF YOU DO NOT APPLY BOTH CHANGES, IT IS LIKELY THAT 
 FIDO U2F WILL NOT WORK AS EXPECTED!

@@ -5,6 +5,7 @@ module DeviseFidoUsf
 end
 
 require 'devise'
+require 'u2f'
 require 'devise_fido_usf/routes'
 require 'devise_fido_usf/rails'
 
