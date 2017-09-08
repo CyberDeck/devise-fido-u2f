@@ -13,7 +13,7 @@ class Devise::FidoUsfAuthenticationsController < DeviseController
   def create
     begin
       response = U2F::SignResponse.load_from_json(params[:response])
-    rescue TypeError => e
+    rescue TypeError
       return redirect_to root_path
     end
 

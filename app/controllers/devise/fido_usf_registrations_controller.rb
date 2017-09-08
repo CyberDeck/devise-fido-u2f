@@ -17,14 +17,11 @@ class Devise::FidoUsfRegistrationsController < ApplicationController
   end
 
   def destroy
-    begin
-      device = current_user.fido_usf_devices.find(params[:id])
-      @fade_out_id = device.id
-      device.destroy
-      @devices = current_user.fido_usf_devices.all
-      flash[:success] = I18n.t('fido_usf.flashs.device.removed')
-    rescue ActiveRecord::RecordNotFound
-    end
+    device = current_user.fido_usf_devices.find(params[:id])
+    @fade_out_id = device.id
+    device.destroy
+    @devices = current_user.fido_usf_devices.all
+    flash[:success] = I18n.t('fido_usf.flashs.device.removed')
     respond_to do |format|
       format.js
       format.html { redirect_to user_fido_usf_registration_url }

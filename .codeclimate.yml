@@ -34,3 +34,4 @@ exclude_paths:
 - test/
 - coverage/
 - app/assets/javascript/u2f-api.js
+- lib/generators/templates/migration.rb

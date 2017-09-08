@@ -87,7 +87,9 @@ class FidoUsfRegistrationsControllerTest < ActionController::TestCase
     dev = create_u2f_device(other, @key_handle, @public_key, @certificate)
     sign_in user
     assert_no_difference 'user.fido_usf_devices.count()' do
-      post :destroy, params: { id: dev.id }
+      assert_raises ActiveRecord::RecordNotFound do
+        post :destroy, params: { id: dev.id }
+      end
     end
   end
 end
