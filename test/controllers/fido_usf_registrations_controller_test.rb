@@ -49,9 +49,9 @@ class FidoUsfRegistrationsControllerTest < ActionController::TestCase
     sign_in user
     get :new
     assert @controller.session[:challenges]
-    setup_u2f(@controller)
+    token = setup_u2f(@controller)
     assert_difference 'user.fido_usf_devices.count()', +1 do
-      post :create, params: { response: @device.register_response(@controller.session[:challenges][0]) }
+      post :create, params: { response: token[:device].register_response(@controller.session[:challenges][0]) }
     end
     assert_response :redirect
     assert_redirected_to user_fido_usf_registration_path()
@@ -62,9 +62,9 @@ class FidoUsfRegistrationsControllerTest < ActionController::TestCase
     sign_in user
     get :new
     assert @controller.session[:challenges]
-    setup_u2f(@controller)
+    token = setup_u2f(@controller)
     assert_no_difference 'user.fido_usf_devices.count()' do
-      post :create, params: { response: @device.register_response(@controller.session[:challenges][0], error=true) }
+      post :create, params: { response: token[:device].register_response(@controller.session[:challenges][0], error=true) }
     end
     assert_response :redirect
     assert_redirected_to user_fido_usf_registration_path()
@@ -72,8 +72,8 @@ class FidoUsfRegistrationsControllerTest < ActionController::TestCase
 
   test "#destroy valid token" do
     user = create_user
-    setup_u2f(@controller)
-    dev = create_u2f_device(user, @key_handle, @public_key, @certificate)
+    token = setup_u2f(@controller)
+    dev = create_u2f_device(user, token[:key_handle], token[:public_key], token[:certificate])
     sign_in user
     assert_difference 'user.fido_usf_devices.count()', -1 do
       post :destroy, params: { id: dev.id }
@@ -83,8 +83,8 @@ class FidoUsfRegistrationsControllerTest < ActionController::TestCase
   test "#destroy invalid token" do
     user = create_user
     other = create_user
-    setup_u2f(@controller)
-    dev = create_u2f_device(other, @key_handle, @public_key, @certificate)
+    token = setup_u2f(@controller)
+    dev = create_u2f_device(other, token[:key_handle], token[:public_key], token[:certificate])
     sign_in user
     assert_no_difference 'user.fido_usf_devices.count()' do
       assert_raises ActiveRecord::RecordNotFound do

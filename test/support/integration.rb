@@ -74,17 +74,15 @@ class ActionDispatch::IntegrationTest
   end
 
   def create_user(options={})
-    @user ||= begin
-      user = User.create!(
-        email: options[:email] || 'user@test.com',
-        password: options[:password] || '12345678',
-        password_confirmation: options[:password] || '12345678',
-        created_at: Time.now.utc
-      )
-      user.lock_access! if options[:locked] == true
-      create_u2f_device(user, options[:usf_device][:key_handle], options[:usf_device][:public_key], options[:usf_device][:certificate]) if options[:usf_device]
-      user
-    end
+    user = User.create!(
+      email: options[:email] || 'user@test.com',
+      password: options[:password] || '12345678',
+      password_confirmation: options[:password] || '12345678',
+      created_at: Time.now.utc
+    )
+    user.lock_access! if options[:locked] == true
+    create_u2f_device(user, options[:usf_device][:key_handle], options[:usf_device][:public_key], options[:usf_device][:certificate]) if options[:usf_device]
+    user
   end
 
   def sign_in_as_user(options={}, &block)
@@ -96,6 +94,40 @@ class ActionDispatch::IntegrationTest
     yield if block_given?
     click_button 'Log in'
     user
+  end
+
+  def sign_in_as_user_with_token(options={}, &block)
+    user = create_user(options)
+    visit_with_option options[:visit], new_user_session_path
+    fill_in 'Email', with: options[:email] || 'user@test.com'
+    fill_in 'Password', with: options[:password] || '12345678'
+    check 'Remember me' if options[:remember_me] == true
+    yield if block_given?
+    click_button 'Log in'
+    assert_text 'Authenticate key'
+    challenge = find_javascript_assignment_for_string(page, 'challenge')
+    set_hidden_field 'response', options[:usf_device][:device].sign_response(challenge)
+    submit_form! 'form'
+    user
+  end
+
+  def sign_in_as_existing_user_with_token(user, options={}, &block)
+    visit_with_option options[:visit], new_user_session_path
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: options[:password] || '12345678'
+    check 'Remember me' if options[:remember_me] == true
+    yield if block_given?
+    click_button 'Log in'
+    assert_text 'Authenticate key'
+    challenge = find_javascript_assignment_for_string(page, 'challenge')
+    set_hidden_field 'response', options[:usf_device][:device].sign_response(challenge)
+    submit_form! 'form'
+    user
+  end
+
+  def sign_out_as_user
+    visit root_path
+    click_link 'sign out'
   end
 
   # Fix assert_redirect_to in integration sessions because they don't take into

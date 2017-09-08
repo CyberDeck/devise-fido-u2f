@@ -77,16 +77,18 @@ class ActiveSupport::TestCase
   end
 
   def setup_u2f(controller)
-    @device = U2F::FakeU2F.new(controller.helpers.u2f.app_id)
-    @key_handle = U2F.urlsafe_encode64(@device.key_handle_raw)
-    @certificate = Base64.strict_encode64(@device.cert_raw)
-    @public_key = @device.origin_public_key_raw
+    device = U2F::FakeU2F.new(controller.helpers.u2f.app_id)
+    key_handle = U2F.urlsafe_encode64(device.key_handle_raw)
+    certificate = Base64.strict_encode64(device.cert_raw)
+    public_key = device.origin_public_key_raw
+    {device: device, key_handle: key_handle, certificate: certificate, public_key: public_key}
   end
 
   def setup_u2f_with_appid(app_id)
-    @device = U2F::FakeU2F.new(app_id)
-    @key_handle = U2F.urlsafe_encode64(@device.key_handle_raw)
-    @certificate = Base64.strict_encode64(@device.cert_raw)
-    @public_key = @device.origin_public_key_raw
+    device = U2F::FakeU2F.new(app_id)
+    key_handle = U2F.urlsafe_encode64(device.key_handle_raw)
+    certificate = Base64.strict_encode64(device.cert_raw)
+    public_key = device.origin_public_key_raw
+    {device: device, key_handle: key_handle, certificate: certificate, public_key: public_key}
   end
 end

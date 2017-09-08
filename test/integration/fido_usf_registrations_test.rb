@@ -23,9 +23,9 @@ class FidoUsfRegistrationTest < ActionDispatch::IntegrationTest
     visit new_user_fido_usf_registration_path()
     registerRequests = find_javascript_assignment_for_array(page, 'registerRequests')
     assert registerRequests[0]["challenge"]
-    setup_u2f_with_appid(get_fake_ssl_hostname)
+    token = setup_u2f_with_appid(get_fake_ssl_hostname)
     # Set response
-    set_hidden_field 'response', @device.register_response(registerRequests[0]['challenge'])
+    set_hidden_field 'response', token[:device].register_response(registerRequests[0]['challenge'])
     submit_form! 'form'
 
     # We have added the device!
@@ -39,9 +39,9 @@ class FidoUsfRegistrationTest < ActionDispatch::IntegrationTest
     visit new_user_fido_usf_registration_path()
     registerRequests = find_javascript_assignment_for_array(page, 'registerRequests')
     assert registerRequests[0]["challenge"]
-    setup_u2f_with_appid(get_fake_ssl_hostname)
+    token = setup_u2f_with_appid(get_fake_ssl_hostname)
     # Set response
-    set_hidden_field 'response', @device.register_response(registerRequests[0]['challenge'], error=true)
+    set_hidden_field 'response', token[:device].register_response(registerRequests[0]['challenge'], error=true)
     submit_form! 'form'
 
     # We have added the device!
@@ -55,9 +55,9 @@ class FidoUsfRegistrationTest < ActionDispatch::IntegrationTest
     visit new_user_fido_usf_registration_path()
     registerRequests = find_javascript_assignment_for_array(page, 'registerRequests')
     assert registerRequests[0]["challenge"]
-    setup_u2f_with_appid(get_fake_ssl_hostname)
+    token = setup_u2f_with_appid(get_fake_ssl_hostname)
     # Set response
-    set_hidden_field 'response', @device.register_response(registerRequests[0]['challenge'])
+    set_hidden_field 'response', token[:device].register_response(registerRequests[0]['challenge'])
     submit_form! 'form'
 
     # We have added the device!
