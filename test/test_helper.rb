@@ -17,4 +17,10 @@ if ActiveSupport::TestCase.respond_to?(:fixture_path=)
 end
 
 require "generators/devise_fido_usf/install_generator"
+require 'pry'
 
+def copy_app_files
+    destination = File.join(destination_root, "app/helpers")
+    FileUtils.mkdir_p(destination)
+    FileUtils.cp file_fixture('application_helper.rb'), destination
+end

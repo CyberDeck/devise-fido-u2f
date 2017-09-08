@@ -37,11 +37,11 @@ module DeviseFidoUsf
       end
 
       def run_migration
-        generate "devise_fido_usf:migrate", "FidoUsfDevices"
+        invoke("devise_fido_usf:migrate", ["FidoUsfDevices"])
       end
 
       def show_readme
-        readme "README" if behavior == :invoke
+        readme("README") if behavior == :invoke
       end
 
       def application_helper_data
