@@ -49,10 +49,25 @@ class ActionDispatch::IntegrationTest
   def find_javascript_assignment_for_array(page, variable)
     page.all('body script', visible: false).each do |el|
       ast = javascript_parser.parse(el.text(:all))
-      assignment = find_ast_for_variable_assignment(ast, "registerRequests")
+      assignment = find_ast_for_variable_assignment(ast, variable)
       if assignment.first.class == RKelly::Nodes::AssignExprNode
         value = assignment.first.value
         return JSON.parse(value.to_ecma)
+      end
+    end
+    return nil
+  end
+
+  def find_javascript_assignment_for_string(page, variable)
+    page.all('body script', visible: false).each do |el|
+      ast = javascript_parser.parse(el.text(:all))
+      assignment = find_ast_for_variable_assignment(ast, variable)
+      if assignment.first.class == RKelly::Nodes::AssignExprNode
+        value = assignment.first.value
+        str = value.value
+        return str[1..-2] if str.chr == "'"
+        return str[1..-2] if str.chr == '"'
+        return "Unknown"
       end
     end
     return nil
@@ -67,6 +82,7 @@ class ActionDispatch::IntegrationTest
         created_at: Time.now.utc
       )
       user.lock_access! if options[:locked] == true
+      create_u2f_device(user, options[:usf_device][:key_handle], options[:usf_device][:public_key], options[:usf_device][:certificate]) if options[:usf_device]
       user
     end
   end
