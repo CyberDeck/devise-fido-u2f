@@ -39,6 +39,19 @@ class ActiveSupport::TestCase
     User.create!(valid_attributes(attributes))
   end
 
+  def create_u2f_device(controller, user, attributes={})
+    setup_u2f(controller)
+    attrib = {
+      user: user,
+      name: 'Unnamed 1',
+      key_handle: @key_handle,
+      public_key: @public_key,
+      certificate: @certificate,
+      counter: 0,
+      last_authenticated_at: Time.now}.update(attributes)
+    FidoUsf::FidoUsfDevice.create!(attrib)
+  end
+
   # Execute the block setting the given values and restoring old values after
   # the block is executed.
   def swap(object, new_values)
@@ -62,5 +75,19 @@ class ActiveSupport::TestCase
         mapping.to.instance_variable_set(:@devise_parameter_filter, nil)
       end
     end
+  end
+
+  def setup_u2f(controller)
+    @device = U2F::FakeU2F.new(controller.helpers.u2f.app_id)
+    @key_handle = U2F.urlsafe_encode64(@device.key_handle_raw)
+    @certificate = Base64.strict_encode64(@device.cert_raw)
+    @public_key = @device.origin_public_key_raw
+  end
+
+  def setup_u2f_with_appid(app_id)
+    @device = U2F::FakeU2F.new(app_id)
+    @key_handle = U2F.urlsafe_encode64(@device.key_handle_raw)
+    @certificate = Base64.strict_encode64(@device.cert_raw)
+    @public_key = @device.origin_public_key_raw
   end
 end

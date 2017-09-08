@@ -32,8 +32,8 @@ class Devise::FidoUsfRegistrationsController < ApplicationController
   end
 
   def create
-    response = U2F::RegisterResponse.load_from_json(params[:response])
     begin
+      response = U2F::RegisterResponse.load_from_json(params[:response])
       reg = helpers.u2f.register!(session[:challenges], response)
       FidoUsf::FidoUsfDevice.create!(
           user: current_user,
@@ -43,14 +43,14 @@ class Devise::FidoUsfRegistrationsController < ApplicationController
           public_key: reg.public_key,
           counter: reg.counter,
           last_authenticated_at: Time.now)
+      flash[:success] = I18n.t('fido_usf.flashs.device.registered')
     rescue U2F::Error => e
       @error_message = "Unable to register: #{e.class.name}"
+      flash[:error] = @error_message
     ensure
       session.delete(:challenges)
     end
 
-    flash[:success] = I18n.t('fido_usf.flashs.device.registered')
     redirect_to user_fido_usf_registration_path()
-
   end
 end

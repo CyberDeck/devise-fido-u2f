@@ -9,8 +9,9 @@
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <% flash.each do |key, value| %>
+      <%= content_tag :p, value, class: "#{key}" %>
+    <% end %>
     <%= yield %>
   </body>
 </html>

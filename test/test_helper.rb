@@ -41,4 +41,5 @@ end
 require 'rails-controller-testing'
 Rails::Controller::Testing.install
 
+require 'rkelly'
 require 'pry'

@@ -10,6 +10,7 @@ class FidoUsfRegistrationsControllerTest < ActionController::TestCase
 
   test "#new is forbidden for visitors" do
     get :new 
+    assert_nil @controller.session[:challenges]
     assert_response :redirect
     assert_redirected_to new_user_session_path()
   end
@@ -18,6 +19,7 @@ class FidoUsfRegistrationsControllerTest < ActionController::TestCase
     user = create_user
     sign_in user
     get :new
+    assert @controller.session[:challenges]
     assert_response :success
     assert_template 'devise/fido_usf_registrations/new'
   end
@@ -34,5 +36,56 @@ class FidoUsfRegistrationsControllerTest < ActionController::TestCase
     get :show 
     assert_response :success
     assert_template 'devise/fido_usf_registrations/show'
+  end
+
+  test "#create is forbidden for visitors" do
+    post :create
+    assert_response :redirect
+    assert_redirected_to new_user_session_path()
+  end
+
+  test "#create for logged in user with valid token" do
+    user = create_user
+    sign_in user
+    get :new
+    assert @controller.session[:challenges]
+    setup_u2f(@controller)
+    assert_difference 'user.fido_usf_devices.count()', +1 do
+      post :create, params: { response: @device.register_response(@controller.session[:challenges][0]) }
+    end
+    assert_response :redirect
+    assert_redirected_to user_fido_usf_registration_path()
+  end
+
+  test "#create for logged in user with invalid challenge" do
+    user = create_user
+    sign_in user
+    get :new
+    assert @controller.session[:challenges]
+    setup_u2f(@controller)
+    assert_no_difference 'user.fido_usf_devices.count()' do
+      post :create, params: { response: @device.register_response(@controller.session[:challenges][0], error=true) }
+    end
+    assert_response :redirect
+    assert_redirected_to user_fido_usf_registration_path()
+  end
+
+  test "#destroy valid token" do
+    user = create_user
+    dev = create_u2f_device(@controller, user)
+    sign_in user
+    assert_difference 'user.fido_usf_devices.count()', -1 do
+      post :destroy, params: { id: dev.id }
+    end
+  end
+
+  test "#destroy invalid token" do
+    user = create_user
+    other = create_user
+    dev = create_u2f_device(@controller, other)
+    sign_in user
+    assert_no_difference 'user.fido_usf_devices.count()' do
+      post :destroy, params: { id: dev.id }
+    end
   end
 end

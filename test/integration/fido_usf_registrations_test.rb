@@ -3,15 +3,71 @@ require 'test_helper'
 class FidoUsfRegistrationTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
-
-  #def setup
-  #  request.env['devise.mapping'] = Devise.mappings[:user]
-  #end
-
-  test "#show is forbidden for visitors" do
+  test "#show with valid user" do
     sign_in_as_user
     visit user_fido_usf_registration_path()
     assert_link 'Add'
     #assert_redirected_to new_user_session_path()
   end
+
+  test "#new with valid user" do
+    sign_in_as_user
+    visit new_user_fido_usf_registration_path()
+    #^assert session[:challenge]
+    #assert_redirected_to new_user_session_path()
+  end
+
+  test "#create for logged in user with valid token" do
+    sign_in_as_user
+    
+    visit new_user_fido_usf_registration_path()
+    registerRequests = find_javascript_assignment_for_array(page, 'registerRequests')
+    assert registerRequests[0]["challenge"]
+    setup_u2f_with_appid(get_fake_ssl_hostname)
+    # Set response
+    set_hidden_field 'response', @device.register_response(registerRequests[0]['challenge'])
+    submit_form! 'form'
+
+    # We have added the device!
+    assert_text I18n.t('fido_usf.flashs.device.registered')
+    assert_link 'Delete'
+  end
+
+  test "#create for logged in user with invalid token" do
+    sign_in_as_user
+    
+    visit new_user_fido_usf_registration_path()
+    registerRequests = find_javascript_assignment_for_array(page, 'registerRequests')
+    assert registerRequests[0]["challenge"]
+    setup_u2f_with_appid(get_fake_ssl_hostname)
+    # Set response
+    set_hidden_field 'response', @device.register_response(registerRequests[0]['challenge'], error=true)
+    submit_form! 'form'
+
+    # We have added the device!
+    assert_text 'Unable to register'
+    assert_no_link 'Delete'
+  end
+
+  test "#destroy for logged in user with valid token" do
+    sign_in_as_user
+    
+    visit new_user_fido_usf_registration_path()
+    registerRequests = find_javascript_assignment_for_array(page, 'registerRequests')
+    assert registerRequests[0]["challenge"]
+    setup_u2f_with_appid(get_fake_ssl_hostname)
+    # Set response
+    set_hidden_field 'response', @device.register_response(registerRequests[0]['challenge'])
+    submit_form! 'form'
+
+    # We have added the device!
+    assert_text I18n.t('fido_usf.flashs.device.registered')
+    assert_link 'Delete'
+
+    # Now delete it
+    click_link 'Delete'
+    assert_text I18n.t('fido_usf.flashs.device.removed')
+    assert_no_link 'Delete'
+  end
+
 end

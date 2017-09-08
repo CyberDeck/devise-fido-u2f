@@ -5,6 +5,59 @@ class ActionDispatch::IntegrationTest
     request.env['warden']
   end
 
+  def fake_ssl_post(path, params)
+    page.driver.post "#{get_fake_ssl_hostname}#{path}", params
+  end
+
+  def get_fake_ssl_hostname
+    Capybara.default_host.sub('http', 'https')
+  end
+
+  def set_hidden_field(name, value)
+    page.find("input[name=#{name}]", visible: false).set(value)
+  end
+
+  def submit_form!(locator)
+    form = page.find(locator)
+    class << form
+      def submit!
+        Capybara::RackTest::Form.new(driver, native).submit({})
+      end
+    end
+    form.submit!
+  end
+
+  def javascript_parser
+    @parser ||= RKelly::Parser.new
+  end
+
+  def find_ast_for_variable_assignment(ast, variable)
+    ast.each do |node| 
+      if node.class == RKelly::Nodes::VarStatementNode 
+        node.each do |var| 
+          if var.class == RKelly::Nodes::VarDeclNode
+            if var.name == variable
+              return var.value
+            end
+          end
+        end
+      end
+    end
+    return nil
+  end
+
+  def find_javascript_assignment_for_array(page, variable)
+    page.all('body script', visible: false).each do |el|
+      ast = javascript_parser.parse(el.text(:all))
+      assignment = find_ast_for_variable_assignment(ast, "registerRequests")
+      if assignment.first.class == RKelly::Nodes::AssignExprNode
+        value = assignment.first.value
+        return JSON.parse(value.to_ecma)
+      end
+    end
+    return nil
+  end
+
   def create_user(options={})
     @user ||= begin
       user = User.create!(

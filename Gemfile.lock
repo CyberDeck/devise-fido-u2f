@@ -128,6 +128,7 @@ GEM
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
       railties (>= 4.2.0, < 5.3)
+    rkelly-remix (0.0.7)
     slop (3.6.0)
     sprockets (3.7.1)
       concurrent-ruby (~> 1.0)
@@ -163,6 +164,7 @@ DEPENDENCIES
   launchy
   pry
   rails-controller-testing
+  rkelly-remix
   sqlite3
   thin
 
