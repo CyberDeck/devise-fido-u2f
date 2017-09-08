@@ -24,6 +24,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency "thin"
   s.add_development_dependency "capybara"
   s.add_development_dependency "launchy"
+  s.add_development_dependency "simplecov"
+  s.add_development_dependency "coveralls"
   s.add_development_dependency "rkelly-remix"
   s.add_development_dependency "rails-controller-testing"
   s.add_development_dependency "pry"

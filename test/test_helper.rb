@@ -1,3 +1,14 @@
+require 'simplecov'
+require 'coveralls'
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+  SimpleCov::Formatter::HTMLFormatter,
+  Coveralls::SimpleCov::Formatter
+]
+SimpleCov.start 'rails' do
+  add_filter('lib/generators/templates/migration.rb')
+  add_filter('lib/devise_fido_usf/version.rb')
+end
+
 require File.expand_path("../../test/dummy/config/environment.rb", __FILE__)
 ActiveRecord::Migrator.migrations_paths = [File.expand_path("../../test/dummy/db/migrate", __FILE__)]
 require "rails/test_help"
