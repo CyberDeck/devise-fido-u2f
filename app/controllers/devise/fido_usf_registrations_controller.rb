@@ -35,12 +35,16 @@ class Devise::FidoUsfRegistrationsController < ApplicationController
     begin
       response = U2F::RegisterResponse.load_from_json(params[:response])
       reg = helpers.u2f.register!(session[:challenges], response)
+      
+      pubkey = reg.public_key
+      pubkey = Base64.decode64(reg.public_key) unless pubkey.bytesize == 65 && pubkey.byteslice(0) != "\x04" 
+      
       FidoUsf::FidoUsfDevice.create!(
           user: current_user,
           name: 'Unnamed 1',
           certificate: reg.certificate,
           key_handle: reg.key_handle,
-          public_key: reg.public_key,
+          public_key: pubkey,
           counter: reg.counter,
           last_authenticated_at: Time.now)
       flash[:success] = I18n.t('fido_usf.flashs.device.registered')
