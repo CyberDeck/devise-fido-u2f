@@ -22,5 +22,8 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "thin"
+  s.add_development_dependency "capybara"
+  s.add_development_dependency "launchy"
+  s.add_development_dependency "rails-controller-testing"
   s.add_development_dependency "pry"
 end

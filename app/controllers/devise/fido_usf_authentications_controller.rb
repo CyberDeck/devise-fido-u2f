@@ -1,5 +1,4 @@
 class Devise::FidoUsfAuthenticationsController < DeviseController
-  before_action :authenticate_user!
   before_action :find_resource_and_verify_password, only: [:new, :create]
 
   def new

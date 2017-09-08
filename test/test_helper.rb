@@ -16,11 +16,29 @@ if ActiveSupport::TestCase.respond_to?(:fixture_path=)
   ActiveSupport::TestCase.fixtures :all
 end
 
-require "generators/devise_fido_usf/install_generator"
-require 'pry'
+# Load support files
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
-def copy_app_files
-    destination = File.join(destination_root, "app/helpers")
-    FileUtils.mkdir_p(destination)
-    FileUtils.cp file_fixture('application_helper.rb'), destination
+require 'generators/devise_fido_usf/install_generator'
+
+require 'capybara/rails'
+require 'capybara/minitest'
+
+class ActionDispatch::IntegrationTest
+  # Make the Capybara DSL available in all integration tests
+  include Capybara::DSL
+  # Make `assert_*` methods behave like Minitest assertions
+  include Capybara::Minitest::Assertions
+
+  # Reset sessions and driver between tests
+  # Use super wherever this method is redefined in your individual test classes
+  def teardown
+    Capybara.reset_sessions!
+    Capybara.use_default_driver
+  end
 end
+
+require 'rails-controller-testing'
+Rails::Controller::Testing.install
+
+require 'pry'

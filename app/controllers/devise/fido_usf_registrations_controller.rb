@@ -1,4 +1,4 @@
-class Devise::FidoUsfRegistrationsController < DeviseController
+class Devise::FidoUsfRegistrationsController < ApplicationController
   before_action :authenticate_user!
 
   def new
