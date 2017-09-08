@@ -11,25 +11,33 @@ class Devise::FidoUsfAuthenticationsController < DeviseController
   end
 
   def create
-    response = U2F::SignResponse.load_from_json(params[:response])
+    begin
+      response = U2F::SignResponse.load_from_json(params[:response])
+    rescue TypeError => e
+      return redirect_to root_path
+    end
+
     registration = @resource.fido_usf_devices.find_by_key_handle(response.key_handle)
     return 'Need to register first' unless registration
 
     begin
-      helpers.u2f.authenticate!(session[:"#{resource_name}_u2f_challenge"], response, Base64.decode64(registration.public_key), registration.counter)
+
+      #helpers.u2f.authenticate!(session[:"#{resource_name}_u2f_challenge"], response, Base64.decode64(registration.public_key), registration.counter)
+      helpers.u2f.authenticate!(session[:"#{resource_name}_u2f_challenge"], response, registration.public_key, registration.counter)
+      registration.update(counter: response.counter, last_authenticated_at: Time.now)
+
+      # Remember the user (if applicable)
+      @resource.remember_me = Devise::TRUE_VALUES.include?(session[:"#{resource_name}_remember_me"]) if @resource.respond_to?(:remember_me=)
+      sign_in(resource_name, @resource)
+
+      set_flash_message(:notice, :signed_in) if is_navigational_format?
     rescue U2F::Error => e
-      @error_message = "Unable to authenticate: #{e.class.name}"
+      flash[:error] = "Unable to authenticate: #{e.class.name}"
+      return redirect_to root_path
     ensure
       session.delete(:"#{resource_name}_u2f_challenge")
     end
 
-    registration.update(counter: response.counter, last_authenticated_at: Time.now)
-
-    # Remember the user (if applicable)
-    @resource.remember_me = Devise::TRUE_VALUES.include?(session[:"#{resource_name}_remember_me"]) if @resource.respond_to?(:remember_me=)
-    sign_in(resource_name, @resource)
-
-    set_flash_message(:notice, :signed_in) if is_navigational_format?
     respond_with resource, :location => after_sign_in_path_for(@resource)
   end
 

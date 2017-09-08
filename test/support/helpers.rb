@@ -39,14 +39,13 @@ class ActiveSupport::TestCase
     User.create!(valid_attributes(attributes))
   end
 
-  def create_u2f_device(controller, user, attributes={})
-    setup_u2f(controller)
+  def create_u2f_device(user, key_handle, public_key, certificate, attributes={})
     attrib = {
       user: user,
       name: 'Unnamed 1',
-      key_handle: @key_handle,
-      public_key: @public_key,
-      certificate: @certificate,
+      key_handle: key_handle,
+      public_key: public_key,
+      certificate: certificate,
       counter: 0,
       last_authenticated_at: Time.now}.update(attributes)
     FidoUsf::FidoUsfDevice.create!(attrib)

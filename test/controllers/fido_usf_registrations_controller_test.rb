@@ -72,7 +72,8 @@ class FidoUsfRegistrationsControllerTest < ActionController::TestCase
 
   test "#destroy valid token" do
     user = create_user
-    dev = create_u2f_device(@controller, user)
+    setup_u2f(@controller)
+    dev = create_u2f_device(user, @key_handle, @public_key, @certificate)
     sign_in user
     assert_difference 'user.fido_usf_devices.count()', -1 do
       post :destroy, params: { id: dev.id }
@@ -82,7 +83,8 @@ class FidoUsfRegistrationsControllerTest < ActionController::TestCase
   test "#destroy invalid token" do
     user = create_user
     other = create_user
-    dev = create_u2f_device(@controller, other)
+    setup_u2f(@controller)
+    dev = create_u2f_device(other, @key_handle, @public_key, @certificate)
     sign_in user
     assert_no_difference 'user.fido_usf_devices.count()' do
       post :destroy, params: { id: dev.id }
