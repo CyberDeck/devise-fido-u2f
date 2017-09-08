@@ -1,5 +1,6 @@
 # FIDO U2F Authentication for Rails Devise
 
+[![Gem Version](https://badge.fury.io/rb/devise_fido_usf.svg)](https://badge.fury.io/rb/devise_fido_usf)
 [![Dependency Status](https://gemnasium.com/badges/github.com/CyberDeck/devise-fido-u2f.svg)](https://gemnasium.com/github.com/CyberDeck/devise-fido-u2f)
 [![Security](https://hakiri.io/github/CyberDeck/devise-fido-u2f/master.svg)](https://hakiri.io/github/CyberDeck/devise-fido-u2f/master)
 

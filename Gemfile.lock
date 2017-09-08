@@ -2,9 +2,9 @@ PATH
   remote: .
   specs:
     devise_fido_usf (0.1.0)
-      devise (>= 4.2.0)
-      rails (>= 5.0.0)
-      u2f
+      devise (~> 4.2)
+      rails (~> 5.0)
+      u2f (= 1.0.0)
 
 GEM
   remote: https://rubygems.org/
