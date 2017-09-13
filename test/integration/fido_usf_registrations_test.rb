@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class FidoUsfRegistrationTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
+  # include Devise::Test::IntegrationHelpers
 
   test "#show with valid user" do
     sign_in_as_user

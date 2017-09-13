@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class FidoUsfAuthenticationTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
+  # include Devise::Test::IntegrationHelpers
 
   test "visit without 2fa" do
     visit secret_path()

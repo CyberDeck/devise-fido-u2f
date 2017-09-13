@@ -1,4 +1,4 @@
-class CreateFidoUsfDevices < ActiveRecord::Migration[5.1]
+class CreateFidoUsfDevices < ActiveRecord::Migration[5.0]
   def change
     create_table :fido_usf_devices do |t|
       t.references  :user,                  null: false, polymorphic: true, index: true

@@ -53,6 +53,14 @@ module DeviseFidoUsf
   end
 RUBY
       end
+
+      private
+    
+      def inject_into_module(path, module_name, *args, &block)
+        config = args.last.is_a?(Hash) ? args.pop : {}
+        config[:after] = /module #{module_name}\n|module #{module_name} .*\n/
+        insert_into_file(path, *(args << config), &block)
+      end
     end
   end
 end

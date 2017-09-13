@@ -8,5 +8,6 @@ test/dummy/log/*.log
 test/dummy/tmp/
 test/tmp/
 vendor/
+Gemfile.lock
 # vim artifacts
 **.swp
