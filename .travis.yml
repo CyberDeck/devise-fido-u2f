@@ -20,6 +20,6 @@ env:
 #    - rvm: ruby-head
 sudo: false
 cache: bundler
-before_install: "rm ${BUNDLE_GEMFILE}.lock"
+before_install: "rm -f ${BUNDLE_GEMFILE}.lock"
 before_script: "bundle update"
 script: "RAILS_ENV=test bin/test"
