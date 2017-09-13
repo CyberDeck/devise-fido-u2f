@@ -34,7 +34,7 @@ class ViewsGeneratorTest < Rails::Generators::TestCase
   def assert_device_links(scope = nil)
     scope = "devise" if scope.nil?
 
-    link_devices = /<%= render '#{scope}\/fido_usf_registrations\/devices %>'/
+    link_devices = /<%= render '#{scope}\/fido_usf_registrations\/devices' %>/
     link_device = /<%= render partial: '#{scope}\/fido_usf_registrations\/device', collection: @devices %>/
 
     assert_file "app/views/#{scope}/fido_usf_registrations/show.html.erb", link_devices

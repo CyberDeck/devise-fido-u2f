@@ -31,6 +31,7 @@ end
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 require 'generators/devise_fido_usf/install_generator'
+require 'generators/devise_fido_usf/views_generator'
 
 require 'capybara/rails'
 require 'capybara/minitest'
