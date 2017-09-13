@@ -2,7 +2,7 @@ require 'test_helper'
 
 class FidoUsfAuthenticationsControllerTest < ActionController::TestCase
   tests Devise::FidoUsfAuthenticationsController
-  include DeviseFidoUsf::ControllerHelpers
+  include Devise::Test::ControllerHelpers
 
   def setup
     request.env['devise.mapping'] = Devise.mappings[:user]
