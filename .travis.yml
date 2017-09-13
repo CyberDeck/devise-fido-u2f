@@ -3,7 +3,7 @@ rvm:
   - 2.2.7
   - 2.3.4
   - 2.4.1
-  - ruby-head
+#  - ruby-head
 
 env:
   global:
@@ -15,9 +15,9 @@ env:
     - "RAILS_VERSION=5.0.0 DEVISE_VERSION=4.3.0"
     - "RAILS_VERSION=5.1.0 DEVISE_VERSION=4.3.0"
 
-matrix:
-  allow_failures:
-    - rvm: ruby-head
+#matrix:
+#  allow_failures:
+#    - rvm: ruby-head
 sudo: false
 cache: bundler
 before_install: "rm ${BUNDLE_GEMFILE}.lock"
