@@ -7,7 +7,6 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new [
 SimpleCov.start 'rails' do
   add_filter('lib/generators/templates/migration.rb')
   add_filter('lib/devise_fido_usf/version.rb')
-  add_filter('vendor/')
 end
 
 require File.expand_path("../../test/dummy/config/environment.rb", __FILE__)
@@ -17,6 +16,8 @@ require "rails/test_help"
 # Filter out Minitest backtrace while allowing backtrace from other libraries
 # to be shown.
 Minitest.backtrace_filter = Minitest::BacktraceFilter.new
+
+Rails::TestUnitReporter.executable = 'bin/test'
 
 # Load fixtures from the engine
 if ActiveSupport::TestCase.respond_to?(:fixture_path=)

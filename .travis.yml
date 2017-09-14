@@ -1,25 +1,6 @@
+script: "bin/test"
 language: ruby
 rvm:
   - 2.2.7
   - 2.3.4
   - 2.4.1
-#  - ruby-head
-
-env:
-  global:
-    - "RAILS_ENV=test"
-  matrix:
-    - "RAILS_VERSION=5.0.0 DEVISE_VERSION=4.0.0"
-    - "RAILS_VERSION=5.0.0 DEVISE_VERSION=4.1.0"
-    - "RAILS_VERSION=5.0.0 DEVISE_VERSION=4.2.0"
-    - "RAILS_VERSION=5.0.0 DEVISE_VERSION=4.3.0"
-    - "RAILS_VERSION=5.1.0 DEVISE_VERSION=4.3.0"
-
-#matrix:
-#  allow_failures:
-#    - rvm: ruby-head
-sudo: false
-cache: bundler
-before_install: "rm ${BUNDLE_GEMFILE}.lock"
-before_script: "bundle update"
-script: "RAILS_ENV=test bin/test"

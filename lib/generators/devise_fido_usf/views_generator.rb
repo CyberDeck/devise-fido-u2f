@@ -18,8 +18,8 @@ module DeviseFidoUsf
 
       protected
 
-      def view_directory(name, _target_path = nil)
-        directory name.to_s, _target_path || "#{target_path}/#{name}" do |content|
+      def view_directory(name, opt_target_path = nil)
+        directory name.to_s, opt_target_path || "#{target_path}/#{name}" do |content|
           if scope
             content.gsub "devise/fido_usf_registrations/device", "#{plural_scope}/fido_usf_registrations/device"
           else
