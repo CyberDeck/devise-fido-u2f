@@ -59,6 +59,17 @@ $ rails db:migrate
 
 Remember: To use it you always needs to run your development server with SSL. Otherwise, the FIDO U2F protocol will not allow registration or authentication!
 
+## FIDO U2F Views
+
+To enable the user to register a FIDO U2F device and to change the appeareance of the authentication screens you need to customize its views.
+You can install the `devise_fido_usf` views by running
+
+```bash
+rails generate devise_fido_usf:views
+```
+
+After that, you need to adapt the views to your needs. Take a look at the ![Devise FIDO U2F example app](https://github.com/cyberdeck/devise-fido-u2f-example-app) how it could be integrated into a Rails 5.1 application running Bootstrap v4.
+
 ## Contributing
 This is my first developed and published gem. If you find something unusual or uncommon within my code, please drop me a note how to fix it or make it better. Thank you!
 
