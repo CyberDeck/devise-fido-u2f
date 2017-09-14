@@ -4,7 +4,11 @@ Device FIDO U2F successfully installed to your application.
 
 You need to:
 
-1) Adapt your Devise models to include both the FIDO U2F registration and
+1) Migrate database changes by running
+
+   'rails db:migrate'
+
+2) Adapt your Devise models to include both the FIDO U2F registration and
    authentication modules, e.g. change
 
    'devise :database_authenticable ...'
@@ -14,7 +18,7 @@ You need to:
    'devise :database_authenticable ..., 
     :fido_usf_registerable, :fido_usf_authenticatable'
 
-2) Modify your application controller 
+3) Modify your application controller 
    (i.e. app/controllers/application_controller.rb) to always prepend the 
    'protect_from_forgery' within the action chain, e.g. change
 
@@ -24,12 +28,12 @@ You need to:
 
    'protect_from_forgery with: :exception, prepend: true'
 
-3) Add 'u2f-api.js' to your javascript assets, e.g. include in
+4) Add 'u2f-api.js' to your javascript assets, e.g. include in
    'app/assets/javascript/application.js' the following statement:
 
    '//= require u2f-api'
 
-4) You need to run your server with SSL. Otherwise U2F refuses to work.
+5) You need to run your server with SSL. Otherwise U2F refuses to work.
    Probably you want to install the "thin" gem and use:
 
    'thin start --ssl -p 3000'
@@ -37,7 +41,7 @@ You need to:
    to start your development server.
 
 
-DISCLAIMER: IF YOU DO NOT APPLY BOTH CHANGES, IT IS LIKELY THAT 
+DISCLAIMER: IF YOU DO NOT APPLY ALL  CHANGES, IT IS LIKELY THAT 
 FIDO U2F WILL NOT WORK AS EXPECTED!
 
 ===============================================================================
