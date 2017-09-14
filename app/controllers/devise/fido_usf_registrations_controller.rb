@@ -47,11 +47,14 @@ class Devise::FidoUsfRegistrationsController < ApplicationController
       flash[:success] = I18n.t('fido_usf.flashs.device.registered')
     rescue U2F::Error => e
       @error_message = "Unable to register: #{e.class.name}"
-      flash[:error] = @error_message
+      flash[:error] = @error_message 
     ensure
       session.delete(:challenges)
     end
 
-    redirect_to user_fido_usf_registration_path()
+    respond_to do |format|
+      format.js
+      format.html { redirect_to user_fido_usf_registration_url }
+    end
   end
 end
