@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    devise_fido_usf (0.1.4)
+    devise_fido_usf (0.1.5)
       devise (~> 4.3)
       rails (~> 5.1)
       thor (>= 0.20.0)

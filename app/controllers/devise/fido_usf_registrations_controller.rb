@@ -36,9 +36,9 @@ class Devise::FidoUsfRegistrationsController < ApplicationController
       pubkey = reg.public_key
       pubkey = Base64.decode64(reg.public_key) unless pubkey.bytesize == 65 && pubkey.byteslice(0) != "\x04" 
       
-      FidoUsf::FidoUsfDevice.create!(
+      @device = FidoUsf::FidoUsfDevice.create!(
           user: current_user,
-          name: 'Unnamed 1',
+          name: "Token ##{current_user.fido_usf_devices.count+1}",
           certificate: reg.certificate,
           key_handle: reg.key_handle,
           public_key: pubkey,
