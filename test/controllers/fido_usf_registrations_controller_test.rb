@@ -92,4 +92,35 @@ class FidoUsfRegistrationsControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test "#update name" do
+    user = create_user
+    token = setup_u2f(@controller)
+    dev = create_u2f_device(user, token[:key_handle], token[:public_key], token[:certificate])
+    sign_in user
+    post :update, params: { id: dev.id, fido_usf_device: {name: "New name"} }
+    assert dev.reload.name, "New name"
+  end
+
+  test "#update name for wrong user" do
+    user = create_user
+    other = create_user
+    token = setup_u2f(@controller)
+    dev = create_u2f_device(other, token[:key_handle], token[:public_key], token[:certificate])
+    sign_in user
+    assert_raises ActiveRecord::RecordNotFound do
+      post :update, params: { id: dev.id, fido_usf_device: {name: "New name"} }
+    end
+    assert_not_equal dev.reload.name, "New name"
+  end
+
+  test "#update with illegal parameters" do
+    user = create_user
+    token = setup_u2f(@controller)
+    dev = create_u2f_device(user, token[:key_handle], token[:public_key], token[:certificate])
+    sign_in user
+    old_key_handle = dev.key_handle
+    post :update, params: { id: dev.id, fido_usf_device: {key_handle: "New name"} }
+    assert dev.reload.key_handle, old_key_handle
+  end
 end

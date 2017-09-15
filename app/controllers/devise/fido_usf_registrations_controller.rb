@@ -57,4 +57,19 @@ class Devise::FidoUsfRegistrationsController < ApplicationController
       format.html { redirect_to user_fido_usf_registration_url }
     end
   end
+
+  def update
+    device = current_user.fido_usf_devices.find(params[:id])
+    device.update!(fido_usf_params)
+    respond_to do |format|
+      format.js
+      format.html { redirect_to user_fido_usf_registration_url }
+    end
+  end
+
+  private
+    def fido_usf_params
+      # Only allow to update the name
+      params.require(:fido_usf_device).permit(:name)
+    end
 end
