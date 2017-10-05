@@ -30,4 +30,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rkelly-remix"
   s.add_development_dependency "rails-controller-testing"
   s.add_development_dependency "pry"
+  s.add_development_dependency "nokogiri", ">= 1.8.1"
 end
