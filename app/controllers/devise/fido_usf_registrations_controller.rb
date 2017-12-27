@@ -2,11 +2,11 @@ class Devise::FidoUsfRegistrationsController < ApplicationController
   before_action :authenticate_user!
 
   def new
-    @registration_requests = helpers.u2f.registration_requests
+    @registration_requests = u2f.registration_requests
     session[:challenges] = @registration_requests.map(&:challenge)
     key_handles = current_user.fido_usf_devices.map(&:key_handle)
-    @sign_requests = helpers.u2f.authentication_requests(key_handles)
-    @app_id = helpers.u2f.app_id
+    @sign_requests = u2f.authentication_requests(key_handles)
+    @app_id = u2f.app_id
     render :new
   end
 
@@ -31,8 +31,8 @@ class Devise::FidoUsfRegistrationsController < ApplicationController
   def create
     begin
       response = U2F::RegisterResponse.load_from_json(params[:response])
-      reg = helpers.u2f.register!(session[:challenges], response)
-      
+      reg = u2f.register!(session[:challenges], response)
+
       pubkey = reg.public_key
       pubkey = Base64.decode64(reg.public_key) unless pubkey.bytesize == 65 && pubkey.byteslice(0) != "\x04" 
       
@@ -68,8 +68,14 @@ class Devise::FidoUsfRegistrationsController < ApplicationController
   end
 
   private
-    def fido_usf_params
-      # Only allow to update the name
-      params.require(:fido_usf_device).permit(:name)
-    end
+
+  def fido_usf_params
+    # Only allow to update the name
+    params.require(:fido_usf_device).permit(:name)
+  end
+
+  def u2f
+    # use base_url as app_id, e.g. 'http://localhost:3000'
+    @u2f ||= U2F::U2F.new(request.base_url)
+  end
 end
