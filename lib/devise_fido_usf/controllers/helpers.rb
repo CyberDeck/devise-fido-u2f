@@ -6,7 +6,8 @@ module DeviseFidoUsf
       extend ActiveSupport::Concern
 
       included do
-        before_action :check_request_and_redirect_to_verify_fido_usf, :if => :is_user_signing_in?
+        before_action :check_request_and_redirect_to_verify_fido_usf,
+                      if: :is_user_signing_in?
       end
 
       private

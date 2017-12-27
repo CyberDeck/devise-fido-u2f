@@ -6,10 +6,9 @@ module Devise
       extend ActiveSupport::Concern
 
       # Does the user has a registered FIDO U2F device?
-      def with_fido_usf_authentication?()
-        FidoUsf::FidoUsfDevice.where(user: self).count()>0
+      def with_fido_usf_authentication?
+        FidoUsf::FidoUsfDevice.where(user: self).count > 0
       end
-
     end
   end
 end

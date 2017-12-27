@@ -5,4 +5,3 @@ module DeviseFidoUsf
     end
   end
 end
-
