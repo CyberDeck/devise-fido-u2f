@@ -2,4 +2,4 @@
 <p>List of registered devices:</p>
 <%= render 'devise/fido_usf_registrations/devices' %>
 <p><%= link_to 'Back', root_path %></p>
-<p><%= link_to 'Add', new_user_fido_usf_registration_path %></p>
+<p><%= link_to 'Add', send("new_#{resource_name}_fido_usf_registration_path") %></p>

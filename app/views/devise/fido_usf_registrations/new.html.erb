@@ -3,7 +3,7 @@
 <p id="waiting">Waiting...</p>
 <p id="error" style="display: none;"></p>
 
-<%= form_tag user_fido_usf_registration_path(), method: 'post' do %>
+<%= form_tag send("#{resource_name}_fido_usf_registration_path"), method: 'post' do %>
   <%= hidden_field_tag :response %>
 <% end %>
 

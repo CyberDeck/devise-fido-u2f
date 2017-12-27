@@ -7,22 +7,24 @@ module DeviseFidoUsf
 
       included do
         before_action :check_request_and_redirect_to_verify_fido_usf,
-                      if: :is_user_signing_in?
+                      if: :user_signing_in?
       end
 
       private
-      def is_devise_sessions_controller?
-        self.class == Devise::SessionsController || self.class.ancestors.include?(Devise::SessionsController)
+
+      def devise_sessions_controller?
+        self.class == Devise::SessionsController ||
+          self.class.ancestors.include?(Devise::SessionsController)
       end
 
-      def is_user_signing_in?
+      def user_signing_in?
         if devise_controller? && signed_in?(resource_name) &&
-          is_devise_sessions_controller? &&
-          self.action_name == "create"
+           devise_sessions_controller? &&
+           action_name == 'create'
           return true
         end
 
-        return false
+        false
       end
 
       def check_request_and_redirect_to_verify_fido_usf
