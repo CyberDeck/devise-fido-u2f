@@ -10,3 +10,4 @@ test/tmp/
 vendor/
 # vim artifacts
 **.swp
+Gemfile.lock

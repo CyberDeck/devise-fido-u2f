@@ -2,8 +2,6 @@
 
 [![Gem Version](https://badge.fury.io/rb/devise_fido_usf.svg)](https://badge.fury.io/rb/devise_fido_usf)
 [![Dependency Status](https://gemnasium.com/badges/github.com/CyberDeck/devise-fido-u2f.svg)](https://gemnasium.com/github.com/CyberDeck/devise-fido-u2f)
-[![Security](https://hakiri.io/github/CyberDeck/devise-fido-u2f/master.svg)](https://hakiri.io/github/CyberDeck/devise-fido-u2f/master)
-
 [![Build Status](https://travis-ci.org/CyberDeck/devise-fido-u2f.svg?branch=master)](https://travis-ci.org/CyberDeck/devise-fido-u2f)
 [![Code Climate](https://codeclimate.com/github/CyberDeck/devise-fido-u2f/badges/gpa.svg)](https://codeclimate.com/github/CyberDeck/devise-fido-u2f)
 [![Coverage Status](https://coveralls.io/repos/github/CyberDeck/devise-fido-u2f/badge.svg)](https://coveralls.io/github/CyberDeck/devise-fido-u2f)
