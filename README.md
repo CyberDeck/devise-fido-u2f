@@ -9,7 +9,7 @@
 A gem which allows Rails Devise users to authenticate against a second factor.
 
 ## Getting started
-Devise FIDO U2F works with Rails 5.1 and Devise 4.3 onwards. You need to add it to your application's Gemfile with:
+Devise FIDO U2F works with Rails 4.2 or newer and Devise 3.2 onwards. You need to add it to your application's Gemfile with:
 
 ```ruby
 gem 'devise_fido_usf'
