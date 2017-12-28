@@ -12,6 +12,24 @@ class FidoUsfAuthenticationTest < ActionDispatch::IntegrationTest
     assert_text 'secret page'
   end
 
+  test 'visit with u2fauth_enabled returning false' do
+    visit secret_path
+    assert_no_text 'secret page'
+    assert_text 'Log in'
+
+    User.send(:include, HasAdditionnalU2fMethods)
+
+    token = setup_u2f_with_appid(get_fake_ssl_hostname)
+    sign_in_as_user(usf_device: token)
+
+    HasAdditionnalU2fMethods.instance_methods.each do |method|
+      User.remove_possible_method(method)
+    end
+
+    visit secret_path
+    assert_text 'secret page'
+  end
+
   test "visit with 2fa active" do
     visit secret_path()
     assert_no_text 'secret page'
@@ -38,7 +56,7 @@ class FidoUsfAuthenticationTest < ActionDispatch::IntegrationTest
 
     assert_no_text 'secret page'
     assert_text 'Authenticate key'
-    
+
     challenge = find_javascript_assignment_for_string(page, 'challenge')
     set_hidden_field 'response', token[:device].sign_response(challenge)
     submit_form! 'form'
