@@ -2,7 +2,7 @@
 <p>Please insert one of your registered keys and press the button within 15 seconds</p>
 <p id="waiting">Waiting...</p>
 <p id="error" style="display: none;"></p>
-<%= form_tag user_fido_usf_authentication_path(), method: 'post' do %>
+<%= form_tag send("#{resource_name}_fido_usf_authentication_path"), method: 'post' do %>
   <%= hidden_field_tag :response %>
 <% end %>
 <script>
