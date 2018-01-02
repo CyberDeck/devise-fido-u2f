@@ -66,7 +66,7 @@ You can install the `devise_fido_usf` views by running
 rails generate devise_fido_usf:views
 ```
 
-After that, you need to adapt the views to your needs. Take a look at the ![Devise FIDO U2F example app](https://github.com/cyberdeck/devise-fido-u2f-example-app) how it could be integrated into a Rails 5.1 application running Bootstrap v4.
+After that, you need to adapt the views to your needs. Take a look at the [Devise FIDO U2F example app](https://github.com/cyberdeck/devise-fido-u2f-example-app) how it could be integrated into a Rails 5.1 application running Bootstrap v4.
 
 ## Contributing
 This is my first developed and published gem. If you find something unusual or uncommon within my code, please drop me a note how to fix it or make it better. Thank you!
