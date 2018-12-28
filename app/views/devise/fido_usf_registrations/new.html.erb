@@ -1,13 +1,13 @@
 <h2>Register key</h2>
 <p>Please insert the key and press the button within 15 seconds</p>
 <p id="waiting">Waiting...</p>
-<p id="error" style="display: none;"></p>
+<p id="error" class="d-none"></p>
 
 <%= form_tag send("#{resource_name}_fido_usf_registration_path"), method: 'post' do %>
   <%= hidden_field_tag :response %>
 <% end %>
 
-<script>
+<%= javascript_tag nonce: true do -%>
   var appId = <%= @app_id.to_json.html_safe %>;
   var registerRequests = <%= @registration_requests.to_json.html_safe %>;
   var signRequests = <%= @sign_requests.to_json.html_safe %>;
@@ -21,8 +21,8 @@
     5: 'Authentication timed out. Please reload to try again.'
   };
   var setError = function(code) {
-    $waiting.style.display = 'none';
-    $error.style.display = 'block';
+    $waiting.className += ' d-none';
+    $error.className = $error.className.replace(/\bd-none\b/g, '');
     $error.innerHTML = errorMap[code];
   };
 
@@ -40,4 +40,4 @@
 
     form.submit();
   }, 15);
-</script>
+<% end -%>
