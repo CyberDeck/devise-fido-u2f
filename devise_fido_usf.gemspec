@@ -9,10 +9,16 @@ Gem::Specification.new do |s|
   s.version     = DeviseFidoUsf::VERSION
   s.authors     = ["H. Gregor Molter"]
   s.email       = ["gregor.molter@secretlab.de"]
-  s.homepage    = "https://github.com/CyberDeck/devise-fido-u2f/"
+  s.homepage    = "https://github.com/CyberDeck/devise-fido-u2f"
   s.summary     = "A Devise module to allow FIDO U2F authentication."
   s.description = "Enables a Rails Devise app to authenticate users with a second factor, e.g. a FIDO U2F compatible hardware token."
   s.license     = "MIT"
+  s.metadata    = {
+    "homepage_uri" => "https://github.com/cyberdeck/devise-fido-u2f",
+    "changelog_uri" => "https://github.com/cyberdeck/devise-fido-u2f/blob/master/CHANGELOG.md",
+    "source_code_uri" => "https://github.com/cyberdeck/devise-fido-u2f/",
+    "bug_tracker_uri" => "https://github.com/cyberdeck/devise-fido-u2f/issues",
+  }
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
