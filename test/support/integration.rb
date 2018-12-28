@@ -48,7 +48,7 @@ class ActionDispatch::IntegrationTest
 
   def find_javascript_assignment_for_array(page, variable)
     page.all('body script', visible: false).each do |el|
-      ast = javascript_parser.parse(el.text(:all))
+      ast = javascript_parser.parse(strip_cdata(el.text(:all)))
       assignment = find_ast_for_variable_assignment(ast, variable)
       if assignment.first.class == RKelly::Nodes::AssignExprNode
         value = assignment.first.value
@@ -60,7 +60,7 @@ class ActionDispatch::IntegrationTest
 
   def find_javascript_assignment_for_string(page, variable)
     page.all('body script', visible: false).each do |el|
-      ast = javascript_parser.parse(el.text(:all))
+      ast = javascript_parser.parse(strip_cdata(el.text(:all)))
       assignment = find_ast_for_variable_assignment(ast, variable)
       if assignment.first.class == RKelly::Nodes::AssignExprNode
         value = assignment.first.value
@@ -71,6 +71,10 @@ class ActionDispatch::IntegrationTest
       end
     end
     return nil
+  end
+
+  def strip_cdata(text)
+    text.sub(/^\/\/<!\[CDATA\[[ ]*/, '').sub(/[ ]*\/\/\]\]>$/, '')
   end
 
   def create_user(options={})
