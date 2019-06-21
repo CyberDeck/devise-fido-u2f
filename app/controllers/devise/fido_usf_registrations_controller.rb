@@ -1,6 +1,8 @@
 class Devise::FidoUsfRegistrationsController < ApplicationController
   before_action :authenticate_resource!
 
+  respond_to :html
+
   def new
     @registration_requests = u2f.registration_requests
     session[:challenges] = @registration_requests.map(&:challenge)
@@ -55,10 +57,7 @@ class Devise::FidoUsfRegistrationsController < ApplicationController
       session.delete(:challenges)
     end
 
-    respond_to do |format|
-      format.js
-      format.html { redirect_to fido_usf_registration_url }
-    end
+    respond_with resource, location: after_sign_in_path_for(resource)
   end
 
   def update
