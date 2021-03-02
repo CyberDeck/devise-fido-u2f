@@ -54,7 +54,7 @@ class FidoUsfRegistrationsControllerTest < ActionController::TestCase
       post :create, params: { response: token[:device].register_response(@controller.session[:challenges][0]) }
     end
     assert_response :redirect
-    assert_redirected_to user_fido_usf_registration_path()
+    assert_redirected_to root_path()
   end
 
   test "#create for logged in user with invalid challenge" do
@@ -67,7 +67,7 @@ class FidoUsfRegistrationsControllerTest < ActionController::TestCase
       post :create, params: { response: token[:device].register_response(@controller.session[:challenges][0], error=true) }
     end
     assert_response :redirect
-    assert_redirected_to user_fido_usf_registration_path()
+    assert_redirected_to root_path()
   end
 
   test "#destroy valid token" do

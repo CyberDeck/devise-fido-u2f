@@ -30,6 +30,9 @@ class FidoUsfRegistrationTest < ActionDispatch::IntegrationTest
 
     # We have added the device!
     assert_text I18n.t('fido_usf.flashs.device.registered')
+
+    # Check that the device may be deleted
+    visit user_fido_usf_registration_path()
     assert_link 'Delete'
   end
 
@@ -44,8 +47,11 @@ class FidoUsfRegistrationTest < ActionDispatch::IntegrationTest
     set_hidden_field 'response', token[:device].register_response(registerRequests[0]['challenge'], error=true)
     submit_form! 'form'
 
-    # We have added the device!
+    # We failed to add the device!
     assert_text 'Unable to register'
+
+    # No device to delete
+    visit user_fido_usf_registration_path()
     assert_no_link 'Delete'
   end
 
@@ -62,11 +68,15 @@ class FidoUsfRegistrationTest < ActionDispatch::IntegrationTest
 
     # We have added the device!
     assert_text I18n.t('fido_usf.flashs.device.registered')
+
+    visit user_fido_usf_registration_path()
     assert_link 'Delete'
 
     # Now delete it
     click_link 'Delete'
     assert_text I18n.t('fido_usf.flashs.device.removed')
+
+    visit user_fido_usf_registration_path()
     assert_no_link 'Delete'
   end
 
