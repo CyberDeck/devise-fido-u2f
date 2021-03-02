@@ -1,7 +1,7 @@
 class Devise::FidoUsfRegistrationsController < ApplicationController
   before_action :authenticate_resource!
 
-  respond_to :html
+  respond_to :html, :js
 
   def new
     @registration_requests = u2f.registration_requests
